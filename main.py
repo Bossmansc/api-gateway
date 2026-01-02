@@ -3,9 +3,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import engine, Base
+# IMPORTANT: Must import models explicitly so they register with Base before create_all
+import models 
 from routers import auth, projects, deployments, users
 
-# Create tables on startup (For production, use Alembic)
+# Create tables on startup
+# This will now work correctly because 'models' was imported above
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -15,7 +18,7 @@ app = FastAPI(
 )
 
 # CORS Configuration
-origins = ["*"] # Configure this properly for production
+origins = ["*"] 
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,3 +48,4 @@ def root():
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    
