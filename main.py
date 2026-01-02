@@ -3,12 +3,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import engine, Base
-# IMPORTANT: Must import models explicitly so they register with Base before create_all
+# We import models here to ensure they are registered with the Base metadata
+# BEFORE create_all is called.
 import models 
 from routers import auth, projects, deployments, users
 
-# Create tables on startup
-# This will now work correctly because 'models' was imported above
+# Initialize Database Tables
+# The 'checkfirst=True' is default but good for clarity; it won't recreate existing tables.
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
