@@ -38,3 +38,7 @@ class Deployment(Base):
     completed_at = Column(DateTime(timezone=True), nullable=True)
 
     project = relationship("Project", back_populates="deployments")
+    started_at = Column(DateTime(timezone=True), server_default=func.now())
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+
+    project = relationship("Project", back_populates="deployments")
